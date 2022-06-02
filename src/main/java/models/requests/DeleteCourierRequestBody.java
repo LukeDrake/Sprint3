@@ -3,10 +3,10 @@ package models.requests;
 import lombok.Data;
 
 @Data
-public class DeleteCourierRequest {
+public class DeleteCourierRequestBody {
     Integer id;
 
-    public DeleteCourierRequest(Integer id) {
+    public DeleteCourierRequestBody(Integer id) {
         this.id = id;
     }
 }

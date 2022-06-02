@@ -2,7 +2,6 @@ package models.responses;
 
 import lombok.Data;
 
-import java.text.DateFormat;
 import java.util.List;
 
 @Data
@@ -34,9 +33,9 @@ public class OrderResponse {
 
     String comment;
 
-    DateFormat createdAt;
+    String createdAt;
 
-    DateFormat updatedAt;
+    String updatedAt;
 
     Integer status;
 

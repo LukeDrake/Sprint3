@@ -2,38 +2,45 @@ package steps;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import models.requests.CreateOrderRequest;
+import models.requests.CreateOrderRequestBody;
 import models.responses.OrderListResponse;
 import models.responses.SuccessOrderResponse;
+import util.RestAssuredClient;
 
+import static config.ApiEndpoints.ORDER_ENDPOINT;
+import static config.ConnectionSettings.BASE_URL;
 import static io.restassured.RestAssured.given;
 
-public class OrderSteps {
+public class OrderSteps extends RestAssuredClient {
+    public OrderSteps() {
+        super(BASE_URL);
+    }
+
     @Step("Создание заказа")
-    public static SuccessOrderResponse createOrder(CreateOrderRequest createOrderRequest) {
+    public SuccessOrderResponse createOrder(CreateOrderRequestBody createOrderRequestBody, Integer code) {
         Response response = given()
-                .body(createOrderRequest)
-                .post("/api/v1/orders");
-        response.then().statusCode(201);
+                .body(createOrderRequestBody)
+                .post(ORDER_ENDPOINT);
+        response.then().statusCode(code);
         return response.as(SuccessOrderResponse.class);
     }
 
     @Step("Получение списка заказов")
-    public static SuccessOrderResponse takeOrders(OrderListResponse orderListResponse) {
-        Response response =  given()
-                .body(orderListResponse)
-                .get("/api/v1/orders");
-        response.then().statusCode(200);
-        return  response.as(SuccessOrderResponse.class);
+    public OrderListResponse takeOrders(Integer code) {
+        Response response = given()
+               // .body(orderListResponse)
+                .get(ORDER_ENDPOINT);
+        response.then().statusCode(code);
+        return response.as(OrderListResponse.class);
     }
 
 
     @Step("Удаляем курьера")
-    public static SuccessOrderResponse deleteOrder(Integer track) {
+    public SuccessOrderResponse deleteOrder(Integer track, Integer code) {
         Response response = given()
-                .put("/api/v1/orders/cancel?track="+track);
-        response.then().statusCode(200);
-        return  response.as(SuccessOrderResponse.class);
+                .put(ORDER_ENDPOINT + "cancel?track=" + track);
+        response.then().statusCode(code);
+        return response.as(SuccessOrderResponse.class);
 
     }
 }

@@ -1,11 +1,11 @@
 package models.responses;
 import lombok.Data;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 @Data
 public class OrderListResponse {
 
-    List<OrderResponse> orders;
+    ArrayList<OrderResponse> orders;
 }
